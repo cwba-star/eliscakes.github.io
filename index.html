@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lojinha de Doces — Cardápio</title>
+    <style>
+         :root {
+            --bg: #0c0f2b;
+            --card: #1a1d3a;
+            --accent: #d6c4ad;
+            --accent-2: #e8dccb;
+            --muted: #c7c7c7;
+            --shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            --radius: 16px;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
+        
+        * {
+            box-sizing: border-box
+        }
+        
+        body {
+            margin: 0;
+            background: #0c0f2b;
+            color: white
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px
+        }
+        
+        .brand {
+            display: flex;
+            gap: 14px;
+            align-items: center
+        }
+        
+        .logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), #ffa6d0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: var(--shadow)
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin: 0
+        }
+        
+        p.subtitle {
+            margin: 0;
+            color: #e0e0e0;
+            font-size: 13px
+        }
+        /* bloco informaçoes */
+        
+        main {
+            max-width: 1100px;
+            margin: 18px auto;
+            padding: 18px
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px
+        }
+        
+        .product {
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(10px);
+            padding: 14px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2)
+        }
+        
+        .product img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px
+        }
+        
+        .product h3 {
+            margin: 0;
+            font-size: 16px
+        }
+        
+        .product p {
+            margin: 0;
+            color: #e0e0e0;
+            font-size: 13px
+        }
+        
+        .meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between
+        }
+        
+        .price {
+            font-weight: 700
+        }
+        
+        .controls {
+            display: flex;
+            gap: 8px
+        }
+        
+        button,
+        .btn {
+            cursor: pointer;
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            font-weight: 600
+        }
+        
+        .btn.outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent)
+        }
+        /* carrinho */
+        
+        .cart-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #c79876;
+            color: white;
+            padding: 14px;
+            border-radius: 999px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+        
+        .cart-count {
+            background: white;
+            color: var(--accent);
+            min-width: 26px;
+            height: 26px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700
+        }
+        
+        .drawer {
+            position: fixed;
+            right: 18px;
+            bottom: 80px;
+            width: 360px;
+            max-width: 92vw;
+            background: var(--card);
+            border-radius: 14px;
+            padding: 14px;
+            box-shadow: var(--shadow);
+            display: none;
+            flex-direction: column;
+            gap: 12px
+        }
+        
+        .drawer.visible {
+            display: flex
+        }
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 320px;
+            overflow: auto;
+            padding-right: 6px
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 10px;
+            align-items: center
+        }
+        
+        .cart-item img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px
+        }
+        
+        .cart-item .title {
+            font-weight: 600
+        }
+        
+        .cart-item .small {
+            font-size: 13px;
+            color: #e0e0e0
+        }
+        
+        .qty {
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 6px;
+            border-top: 1px dashed #eee
+        }
+        
+        .footer-actions {
+            display: flex;
+            gap: 8px
+        }
+        /* babndeira do heroi */
+        
+        .hero {
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            box-shadow: var(--shadow)
+        }
+        
+        .hero .txt h2 {
+            margin: 0 0 6px 0
+        }
+        /* responsivo */
+        
+        @media (max-width:900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+        
+        @media (max-width:600px) {
+            header {
+                padding: 12px
+            }
+            .grid {
+                grid-template-columns: 1fr
+            }
+            .drawer {
+                right: 10px;
+                left: 10px;
+                width: auto;
+                bottom: 70px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="brand">
+            <img src="eliscakes.png" alt="Logo" class="logo" style="width:56px;height:56px;border-radius:12px;object-fit:cover">
+            <div>
+                <h1>Lojinha de Doces</h1>
+                <p class="subtitle"></p>
+            </div>
+        </div>
+        <div>
+            <small class="subtitle">Entregas em BH • Pix e WhatsApp</small>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="socials" style="margin-bottom:10px;display:flex;gap:10px;align-items:center;font-size:18px">
+                <a href="https://www.instagram.com/oliver_cakes_/?igsh=aHg1NW84eHZyZWxk" target="_blank" style="color:#e0e0e0;text-decoration:none;display:flex;align-items:center;gap:8px;font-size:18px">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>                    @oliver_cakes_
+                </a>
+            </div>
+            <div class="info" style="color:#e0e0e0;font-size:14px;margin-bottom:8px"></div>
+
+            <div class="txt">
+                <h2 title>
+                    <p class="subtitle">Peça pelo site e finalize pelo WhatsApp. Clique no carrinho para ver seus itens.</p>
+            </div>
+            </div>
+        </section>
+
+        <!-- Card de Informações do Site -->
+        <section class="about-card" style="margin-top:20px;background:rgba(255,255,255,0.10);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.25);padding:18px;border-radius:14px;box-shadow:var(--shadow);color:white;">
+            <h2 style="margin-top:0">Sobre mim</h2>
+            <p style="color:#e0e0e0;font-size:14px;margin-bottom:10px">Comecei a vender doces para ajudar em casa e contribuir com minhas despesas de estudo. Cada doce feito aqui é uma forma de continuar seguindo meus sonhos e melhorar a vida da minha família.</p>
+            <p style="color:#e0e0e0;font-size:14px;margin-bottom:0">Decidi começar a vender doces para ajudar financeiramente em casa e também para apoiar meus estudos. Cada pedido que você faz me ajuda a continuar evoluindo e construindo um futuro melhor. Obrigada por apoiar minha pequena lojinha!</p>
+        </section>
+
+        <h2 style="margin-top:18px">Cardápio</h2>
+
+        <div class="grid" id="productGrid">
+            <!-- Produtos serão inseridos por JS -->
+        </div>
+    </main>
+
+    <button class="cart-btn" id="openCartBtn" aria-label="Abrir carrinho">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-left:4px"><path d="M6 6h15l-1.5 9h-12z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Ver carrinho</span>
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+
+    <aside class="drawer" id="cartDrawer" aria-hidden="true">
+        <h3 style="margin:0">Seu pedido</h3>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="total-row">
+            <div>Total</div>
+            <div id="cartTotal">R$ 0,00</div>
+        </div>
+        <div class="footer-actions">
+            <button class="btn outline" id="clearCartBtn">Limpar</button>
+            <button class="btn" id="checkoutBtn">Finalizar pedido (WhatsApp)</button>
+        </div>
+    </aside>
+
+    <script>
+        // Configuration
+        // telefone usado para enviar o pedido via WhatsApp.
+        // Assumimos que o número é brasileiro; se precisar de outro país, substitua o prefixo.
+        const WHATSAPP_NUMBER = '5531992979215'; // usei +55 (Brasil) + número informado 31992979215
+
+        const PRODUCTS = [{
+            id: 1,
+            name: 'Bolo Cloud',
+            desc: 'Bolo Cloud: especial da casa, um bolo de cacau 100% com canela  perfeito para a sua mesa de café!',
+            price: 50.00,
+            img: 'bolo cloud.png'
+        }, {
+            id: 2,
+            name: 'Bolo de Limão',
+            desc: 'Calda de ganache de limão com chocolate branco e raspas de limão.',
+            price: 45.00,
+            img: 'bolo de limao.png'
+        }, {
+            id: 3,
+            name: 'Bolo de laranja',
+            desc: 'Bolo de laranja , com calda de laranja e raspas',
+            price: 6.50,
+            img: 'bolo de laranja.png'
+        }, {
+            id: 4,
+            name: 'Sobremesa de morango 1L (4-5 pessoas)',
+            desc: 'especial da casa! Recheios: brigadeiro de ninho, uma camada generosa de morangos frecos, uma camada de chocolate branco, finalizado com ganache de chocolate meio amargo.',
+            price: 70.00,
+            img: 'Sobremesa de morango.png'
+        }, {
+            id: 5,
+            name: 'Sobremesa de morango 2L (8-10 pessoas)',
+            desc: 'especial da casa! Recheios: brigadeiro de ninho, uma camada generosa de morangos frecos, uma camada de chocolate branco, finalizado com ganache de chocolate meio amargo.',
+            price: 95.00,
+            img: 'Sobremesa de morano.png'
+        }, {
+            id: 6,
+            name: 'caixa para presente (6 un)',
+            desc: 'Escolha livre dos sabores: brigadeiros, beijinhos, trufas, brownies, copinhos ou qualquer doce disponível',
+            price: 17.00,
+            img: 'caixa de presente.png'
+        }, {
+            id: 7,
+            name: 'caixa para presente (12 un)',
+            desc: 'Escolha livre dos sabores: brigadeiros, beijinhos, trufas, brownies, copinhos ou qualquer doce disponível',
+            price: 28.00,
+            img: 'caixa de presente.png'
+        }, {
+            id: 8,
+            name: 'Cake box 2L (chocolatudo) ',
+            desc: 'Cake box chocolatudo 2l serve até 10 pessoas: bolo de chocolate 100% cacau, recheio de brigadeiro, finalizado com ganache de chocolate meio amargo.',
+            price: 100.00,
+            img: 'chocolatudo.png'
+        }, {
+            id: 9,
+            name: 'Cake box 2L (morango com ninho)',
+            desc: 'Cake box morango com ninho serve até 10 pessoas: bolo massa branca, brigadeiro de ninho, geleia de morango, pedaços de morango finalizado com ganache de chocolate branco.',
+            price: 100.00,
+            img: 'ninho.png'
+        }];
+
+        // funçoes auxiliares
+        const $ = (id) => document.getElementById(id);
+        const formatBRL = v => 'R$ ' + v.toFixed(2).replace('.', ',');
+
+        // estado do carrinho
+        let cart = {}; // id -> {product, qty}
+
+        function renderProducts() {
+            const grid = $('productGrid');
+            grid.innerHTML = '';
+            PRODUCTS.forEach(p => {
+                const el = document.createElement('div');
+                el.className = 'product';
+                el.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <p class="subtitle">${p.desc}</p>
+          <div class="meta">
+            <div class="price">${formatBRL(p.price)}</div>
+            <div class="controls">
+              <button class="btn outline" onclick="addToCart(${p.id})">Adicionar</button>
+            </div>
+          </div>
+        `;
+                grid.appendChild(el);
+            });
+        }
+
+        function addToCart(id) {
+            const p = PRODUCTS.find(x => x.id === id);
+            if (!p) return;
+            if (!cart[id]) cart[id] = {
+                product: p,
+                qty: 0
+            };
+            cart[id].qty += 1;
+            renderCart();
+            showDrawer();
+        }
+
+        function changeQty(id, delta) {
+            if (!cart[id]) return;
+            cart[id].qty += delta;
+            if (cart[id].qty <= 0) delete cart[id];
+            renderCart();
+        }
+
+        function renderCart() {
+            const itemsEl = $('cartItems');
+            itemsEl.innerHTML = '';
+            let total = 0;
+            let count = 0;
+            Object.values(cart).forEach(ci => {
+                const {
+                    product,
+                    qty
+                } = ci;
+                count += qty;
+                total += product.price * qty;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+          <img src="${product.img}" alt="${product.name}">
+          <div style="flex:1">
+            <div class="title">${product.name}</div>
+            <div class="small">${formatBRL(product.price)} • ${qty} un</div>
+          </div>
+          <div class="qty">
+            <button class="btn outline" onclick="changeQty(${product.id}, -1)">-</button>
+            <div style="min-width:26px;text-align:center">${qty}</div>
+            <button class="btn" onclick="changeQty(${product.id}, 1)">+</button>
+          </div>
+        `;
+                itemsEl.appendChild(div);
+            });
+            $('cartTotal').innerText = formatBRL(total || 0);
+            $('cartCount').innerText = count;
+        }
+
+        function clearCart() {
+            cart = {};
+            renderCart();
+        }
+
+        function showDrawer() {
+            const d = $('cartDrawer');
+            d.classList.add('visible');
+            d.setAttribute('aria-hidden', 'false');
+        }
+
+        function hideDrawer() {
+            const d = $('cartDrawer');
+            d.classList.remove('visible');
+            d.setAttribute('aria-hidden', 'true');
+        }
+
+        // Crie uma mensagem do WhatsApp e abra
+        function checkout() {
+            if (Object.keys(cart).length === 0) {
+                alert('Seu carrinho está vazio. Adicione algum doce.');
+                return;
+            }
+            // coletar informações do usuário via prompt (nome e endereço opcionais)
+            const customerName = prompt('Nome para o pedido (opcional):') || '';
+            const address = prompt('Endereço (opcional) — apenas se for entrega):') || '';
+
+            let msg = `*Pedido via Lojinha de Doces*\n`;
+            if (customerName) msg += `Nome: ${customerName}\n`;
+            if (address) msg += `Endereço: ${address}\n`;
+            msg += `\n*Itens:*\n`;
+            let total = 0;
+            Object.values(cart).forEach(ci => {
+                const p = ci.product;
+                const q = ci.qty;
+                total += p.price * q;
+                msg += `- ${p.name} (x${q}) — ${formatBRL(p.price)}\n`;
+            });
+            msg += `\n*Total:* ${formatBRL(total)}\n`;
+            msg += `\nObrigado!`;
+
+            const encoded = encodeURIComponent(msg);
+            const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+            window.open(waUrl, '_blank');
+        }
+
+        // Vinculações de eventos
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderCart();
+            $('openCartBtn').addEventListener('click', () => {
+                const d = $('cartDrawer');
+                d.classList.toggle('visible');
+            });
+            document.addEventListener('click', (e) => {
+                const drawer = $('cartDrawer');
+                if (!drawer.contains(e.target) && !$('openCartBtn').contains(e.target)) {
+                    //não oculte automaticamente para evitar aborrecimentos no celular; o usuário pode fechar manualmente
+                }
+            });
+            $('clearCartBtn').addEventListener('click', () => {
+                if (confirm('Limpar carrinho?')) {
+                    clearCart();
+                }
+            });
+            $('checkoutBtn').addEventListener('click', checkout);
+        });
+
+        // disponibilizar funções para onclicks in-line
+        window.addToCart = addToCart;
+        window.changeQty = changeQty;
+        window.clearCart = clearCart;
+        window.checkout = checkout;
+    </script>
+</body>
+
+</html>
